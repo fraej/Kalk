@@ -555,11 +555,14 @@ math-field::part(content) {
     min-height: 0;
     margin: 4px 8px;
     border-radius: var(--radius-md);
-    overflow-y: auto;
+    overflow: hidden;
   }
 
   .history-list {
+    flex: 1;
+    min-height: 0;
     max-height: none;
+    overflow-y: auto;
   }
 
   .button-panel {
