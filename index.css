@@ -555,11 +555,29 @@ math-field::part(content) {
   }
 }
 
-/* ---- Rendered LaTeX in history (uses MathField static rendering) ---- */
+/* ---- Rendered LaTeX in history (read-only MathField) ---- */
 .history-entry math-field {
   font-size: 0.8rem;
   pointer-events: none;
   background: transparent;
+  border: none;
+  outline: none;
+  color: var(--text-history-expr);
+  --hue: 270;
+  --text-font-family: 'JetBrains Mono', monospace;
+  min-height: unset;
+  display: inline-block;
+  text-align: right;
+  width: 100%;
+}
+
+.history-entry math-field::part(container) {
+  padding: 0;
+  min-height: unset;
+}
+
+.history-entry math-field::part(content) {
+  padding: 0;
 }
 
 /* Scrollbar for history */

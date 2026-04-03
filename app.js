@@ -323,15 +323,18 @@ function renderHistory() {
     const div = document.createElement('div');
     div.className = 'history-entry';
 
-    const exprSpan = document.createElement('span');
-    exprSpan.className = 'history-expr';
-    exprSpan.textContent = entry.latex;
+    // Render the LaTeX expression using a read-only math-field
+    const exprField = document.createElement('math-field');
+    exprField.className = 'history-expr';
+    exprField.setAttribute('read-only', '');
+    exprField.setAttribute('virtual-keyboard-mode', 'off');
+    exprField.setValue(entry.latex);
 
     const resultSpan = document.createElement('span');
     resultSpan.className = 'history-result';
     resultSpan.textContent = `= ${entry.result}`;
 
-    div.appendChild(exprSpan);
+    div.appendChild(exprField);
     div.appendChild(resultSpan);
 
     div.addEventListener('click', () => {
