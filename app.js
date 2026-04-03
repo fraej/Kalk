@@ -12,6 +12,11 @@ const ce = new ComputeEngine();
 // ---- Wait for MathField to be ready ----
 await customElements.whenDefined('math-field');
 
+// Disable the MathLive virtual keyboard globally
+if (window.mathVirtualKeyboard) {
+  window.mathVirtualKeyboard.visible = false;
+}
+
 // ---- DOM References ----
 const mf = document.getElementById('mathfield');
 const resultPreview = document.getElementById('result-preview');
@@ -328,6 +333,7 @@ function renderHistory() {
     exprField.className = 'history-expr';
     exprField.setAttribute('read-only', '');
     exprField.setAttribute('virtual-keyboard-mode', 'off');
+    exprField.setAttribute('math-virtual-keyboard-policy', 'manual');
     exprField.setValue(entry.latex);
 
     const resultSpan = document.createElement('span');
