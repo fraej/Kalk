@@ -3,8 +3,11 @@
 // Uses MathLive (mathfield) + Compute Engine
 // ====================================
 
-import 'https://esm.run/mathlive';
+import { MathfieldElement } from 'https://esm.run/mathlive';
 import { ComputeEngine } from 'https://esm.run/@cortex-js/compute-engine';
+
+// ---- Configure MathLive fonts before any math-field renders ----
+MathfieldElement.fontsDirectory = 'https://cdn.jsdelivr.net/npm/mathlive@0.109.0/fonts/';
 
 // ---- Compute Engine Instance ----
 const ce = new ComputeEngine();
@@ -24,7 +27,6 @@ const resultValue = document.getElementById('result-value');
 const historyList = document.getElementById('history-list');
 const modeRad = document.getElementById('mode-rad');
 const modeDeg = document.getElementById('mode-deg');
-const shiftRow = document.getElementById('shift-row');
 
 // ---- Command Map: maps data-cmd values to LaTeX strings ----
 const CMD_MAP = {
@@ -46,13 +48,25 @@ const CMD_MAP = {
   square:  '#@^{2}',
   pi:      '\\pi',
   euler:   'e',
-  parens:  '\\left(#?\\right)',
+  parensOpen: '(',
+  parensClose: ')',
   factorial: '#@!',
   abs:     '\\left|#?\\right|',
   frac:    '\\frac{#@}{#?}',
   power:   '#@^{#?}',
   percent: '\\%',
   sci:     '\\times10^{#?}',
+  // Casio Additions
+  calc: '',
+  integral: '\\int_{#?}^{#?} #? dx',
+  inverse: '#@^{-1}',
+  logbox: '\\log_{#?}(#?)',
+  degrees: '^{\\circ}',
+  hyp: '',
+  rcl: '',
+  eng: '',
+  sd: '',
+  mplus: '',
   // Numbers
   '0': '0', '1': '1', '2': '2', '3': '3', '4': '4',
   '5': '5', '6': '6', '7': '7', '8': '8', '9': '9',
@@ -62,13 +76,14 @@ const CMD_MAP = {
   add: '+',
   sub: '-',
   mul: '\\times',
-  div: '\\div',
+  div: '/',
 };
 
 // ---- State ----
 let angleMode = 'rad';
 let shiftActive = false;
 let history = [];
+let lastAns = '';
 
 // ---- Initialize MathField ----
 mf.focus();
@@ -116,6 +131,14 @@ buttonPanel.addEventListener('click', (e) => {
   switch (action) {
     case 'insert': {
       const cmd = btn.dataset.cmd;
+      if (cmd === 'ans') {
+        if (lastAns !== '') {
+          mf.insert(lastAns);
+          mf.focus();
+          updatePreview();
+        }
+        break;
+      }
       const latex = CMD_MAP[cmd];
       if (latex) {
         mf.insert(latex);
@@ -142,6 +165,9 @@ buttonPanel.addEventListener('click', (e) => {
       toggleSign();
       break;
   }
+
+  // Force-clear any stuck :hover / :focus state
+  btn.blur();
 });
 
 // ---- Toggle sign ----
@@ -159,15 +185,11 @@ function toggleSign() {
 // ---- Toggle Shift (2nd function) ----
 function toggleShift() {
   shiftActive = !shiftActive;
-  const normalRows = document.querySelectorAll('.fn-row:not(.shift-row)');
-  const firstRow = normalRows[0];
-
+  const shiftBtn = document.getElementById('btn-shift');
   if (shiftActive) {
-    firstRow.style.display = 'none';
-    shiftRow.style.display = 'flex';
+    shiftBtn.classList.add('btn-shift-active');
   } else {
-    firstRow.style.display = 'flex';
-    shiftRow.style.display = 'none';
+    shiftBtn.classList.remove('btn-shift-active');
   }
 }
 
@@ -298,7 +320,8 @@ function evaluateExpression() {
   }
 
   addToHistory(latex, result);
-  mf.setValue(result);
+  lastAns = result;
+  mf.setValue('');
   mf.focus();
   updatePreview();
 }
@@ -371,3 +394,33 @@ btnDelete.addEventListener('mousedown', (e) => {
 });
 btnDelete.addEventListener('mouseup', () => clearTimeout(deleteTimer));
 btnDelete.addEventListener('mouseleave', () => clearTimeout(deleteTimer));
+
+// ---- Render Function Buttons with LaTeX ----
+document.querySelectorAll('.btn-fn').forEach(btn => {
+  const latex = btn.dataset.latex;
+  if (latex) {
+    btn.innerHTML = '';
+    const mathField = document.createElement('math-field');
+    mathField.setAttribute('read-only', '');
+    mathField.style.pointerEvents = 'none';
+    mathField.style.background = 'transparent';
+    mathField.style.border = 'none';
+    mathField.style.padding = '0';
+    mathField.style.margin = '0';
+    mathField.style.outline = 'none';
+    mathField.style.minHeight = '0';
+    mathField.style.fontSize = 'inherit';
+    
+    // Disable virtual keyboard settings to prevent any interference
+    mathField.setAttribute('virtual-keyboard-mode', 'off');
+    mathField.setAttribute('math-virtual-keyboard-policy', 'manual');
+    
+    mathField.setValue(latex);
+    btn.appendChild(mathField);
+    
+    // Center the content using flex container on the button
+    btn.style.display = 'flex';
+    btn.style.alignItems = 'center';
+    btn.style.justifyContent = 'center';
+  }
+});

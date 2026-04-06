@@ -2,13 +2,13 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, interactive-widget=resizes-content">
   <meta name="description" content="A beautiful scientific calculator powered by MathLive with LaTeX input, symbolic computation, and numeric evaluation.">
   <title>Scientific Calculator — MathLive</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="index.css?v=5">
+  <link rel="stylesheet" href="index.css?v=12">
 </head>
 <body>
   <div class="calculator" id="calculator">
@@ -43,73 +43,74 @@
     <!-- Scientific function buttons -->
     <div class="button-panel">
       <!-- Row: Shift + trig & functions -->
+      <!-- Row 0: Top function keys -->
       <div class="button-row fn-row">
-        <button class="btn btn-fn btn-shift" id="btn-shift" data-action="shift">2nd</button>
-        <button class="btn btn-fn" data-action="insert" data-cmd="sin">sin</button>
-        <button class="btn btn-fn" data-action="insert" data-cmd="cos">cos</button>
-        <button class="btn btn-fn" data-action="insert" data-cmd="tan">tan</button>
-        <button class="btn btn-fn" data-action="insert" data-cmd="ln">ln</button>
-        <button class="btn btn-fn" data-action="insert" data-cmd="log">log</button>
+        <button class="btn btn-fn" data-action="insert" data-cmd="calc"><span class="btn-sec-label">SOLVE<span style="color:#d1a55c">=</span></span>CALC</button>
+        <button class="btn btn-fn" data-action="insert" data-cmd="integral" data-latex="\int"><span class="btn-sec-label">d/dx</span>∫□</button>
+        <div style="flex: 2;"></div> <!-- Space for navigation pad -->
+        <button class="btn btn-fn" data-action="insert" data-cmd="inverse" data-latex="x^{-1}"><span class="btn-sec-label">x!</span>x⁻¹</button>
+        <button class="btn btn-fn" data-action="insert" data-cmd="logbox" data-latex="\log"><span class="btn-sec-label">Σ</span>log_□</button>
       </div>
 
-      <!-- Row: Inverse trig (hidden by default, shown with 2nd) -->
-      <div class="button-row fn-row shift-row" id="shift-row" style="display:none;">
-        <button class="btn btn-fn btn-shift-active" data-action="shift">2nd</button>
-        <button class="btn btn-fn" data-action="insert" data-cmd="arcsin">sin⁻¹</button>
-        <button class="btn btn-fn" data-action="insert" data-cmd="arccos">cos⁻¹</button>
-        <button class="btn btn-fn" data-action="insert" data-cmd="arctan">tan⁻¹</button>
-        <button class="btn btn-fn" data-action="insert" data-cmd="exp">eˣ</button>
-        <button class="btn btn-fn" data-action="insert" data-cmd="pow10">10ˣ</button>
+      <!-- Row 1: Memory & fractions -->
+      <div class="button-row fn-row">
+        <button class="btn btn-fn" data-action="insert" data-cmd="frac" data-latex="\frac{1}{x}"><span class="btn-sec-label">d/c</span>⅟x</button>
+        <button class="btn btn-fn" data-action="insert" data-cmd="sqrt" data-latex="\sqrt{x}"><span class="btn-sec-label">³√</span>√</button>
+        <button class="btn btn-fn" data-action="insert" data-cmd="square" data-latex="x^{2}"><span class="btn-sec-label">x³</span>x²</button>
+        <button class="btn btn-fn" data-action="insert" data-cmd="power" data-latex="x^{y}"><span class="btn-sec-label">x√</span>xʸ</button>
+        <button class="btn btn-fn" data-action="insert" data-cmd="log" data-latex="\log"><span class="btn-sec-label">10ˣ</span>log</button>
+        <button class="btn btn-fn" data-action="insert" data-cmd="ln" data-latex="\ln"><span class="btn-sec-label">eˣ</span>ln</button>
       </div>
 
-      <!-- Row: Powers, roots, constants -->
+      <!-- Row 2: Trig -->
       <div class="button-row fn-row">
-        <button class="btn btn-fn" data-action="insert" data-cmd="sqrt">√</button>
-        <button class="btn btn-fn" data-action="insert" data-cmd="square">x²</button>
-        <button class="btn btn-fn" data-action="insert" data-cmd="pi">π</button>
-        <button class="btn btn-fn" data-action="insert" data-cmd="euler">e</button>
-        <button class="btn btn-fn" data-action="insert" data-cmd="parens">( )</button>
-        <button class="btn btn-fn" data-action="insert" data-cmd="factorial">n!</button>
+        <button class="btn btn-fn" data-action="toggleSign"><span class="btn-sec-label">∠ <span class="btn-alpha-label">A</span></span>(–)</button>
+        <button class="btn btn-fn" data-action="insert" data-cmd="degrees"><span class="btn-sec-label">← <span class="btn-alpha-label">B</span></span>°' "</button>
+        <button class="btn btn-fn" data-action="insert" data-cmd="hyp"><span class="btn-sec-label">Abs <span class="btn-alpha-label">C</span></span>hyp</button>
+        <button class="btn btn-fn" data-action="insert" data-cmd="sin" data-latex="\sin"><span class="btn-sec-label">sin⁻¹ <span class="btn-alpha-label">D</span></span>sin</button>
+        <button class="btn btn-fn" data-action="insert" data-cmd="cos" data-latex="\cos"><span class="btn-sec-label">cos⁻¹ <span class="btn-alpha-label">E</span></span>cos</button>
+        <button class="btn btn-fn" data-action="insert" data-cmd="tan" data-latex="\tan"><span class="btn-sec-label">tan⁻¹ <span class="btn-alpha-label">F</span></span>tan</button>
       </div>
 
-      <!-- Row: Abs, fraction, power, percent -->
+      <!-- Row 3: Utility -->
       <div class="button-row fn-row">
-        <button class="btn btn-fn" data-action="insert" data-cmd="abs">|x|</button>
-        <button class="btn btn-fn" data-action="insert" data-cmd="frac">⅟x</button>
-        <button class="btn btn-fn" data-action="insert" data-cmd="power">xʸ</button>
-        <button class="btn btn-fn" data-action="insert" data-cmd="percent">%</button>
-        <button class="btn btn-fn" data-action="insert" data-cmd="sci">EXP</button>
-        <button class="btn btn-fn" data-action="toggleSign">±</button>
+        <button class="btn btn-fn" data-action="insert" data-cmd="rcl"><span class="btn-sec-label">STO</span>RCL</button>
+        <button class="btn btn-fn" data-action="insert" data-cmd="eng"><span class="btn-sec-label">← <span class="btn-alpha-label">i</span></span>ENG</button>
+        <button class="btn btn-fn" data-action="insert" data-cmd="parensOpen"><span class="btn-sec-label">% <span class="btn-alpha-label">X</span></span>(</button>
+        <button class="btn btn-fn" data-action="insert" data-cmd="parensClose"><span class="btn-sec-label">, <span class="btn-alpha-label">Y</span></span>)</button>
+        <button class="btn btn-fn" data-action="insert" data-cmd="sd"><span class="btn-sec-label">a b/c</span>S⇔D</button>
+        <button class="btn btn-fn" data-action="insert" data-cmd="mplus"><span class="btn-sec-label">M- <span class="btn-alpha-label">M</span></span>M+</button>
       </div>
 
       <!-- Numeric pad + operators -->
       <div class="numpad-grid">
         <!-- Row 1 -->
-        <button class="btn btn-num" data-action="insert" data-cmd="7">7</button>
-        <button class="btn btn-num" data-action="insert" data-cmd="8">8</button>
-        <button class="btn btn-num" data-action="insert" data-cmd="9">9</button>
-        <button class="btn btn-op" data-action="insert" data-cmd="div">÷</button>
-        <button class="btn btn-action btn-del" data-action="delete" id="btn-delete">⌫</button>
+        <button class="btn btn-num" data-action="insert" data-cmd="7"><span class="btn-sec-label">CONST</span>7</button>
+        <button class="btn btn-num" data-action="insert" data-cmd="8"><span class="btn-sec-label">CONV</span>8</button>
+        <button class="btn btn-num" data-action="insert" data-cmd="9"><span class="btn-sec-label">CLR</span>9</button>
+        <button class="btn btn-action btn-del" data-action="delete" id="btn-delete"><span class="btn-sec-label">INS</span>DEL</button>
+        <button class="btn btn-action btn-clear" data-action="clear" id="btn-clear"><span class="btn-sec-label">OFF</span>AC</button>
 
         <!-- Row 2 -->
-        <button class="btn btn-num" data-action="insert" data-cmd="4">4</button>
-        <button class="btn btn-num" data-action="insert" data-cmd="5">5</button>
+        <button class="btn btn-num" data-action="insert" data-cmd="4"><span class="btn-sec-label">MATRIX</span>4</button>
+        <button class="btn btn-num" data-action="insert" data-cmd="5"><span class="btn-sec-label">VECTOR</span>5</button>
         <button class="btn btn-num" data-action="insert" data-cmd="6">6</button>
-        <button class="btn btn-op" data-action="insert" data-cmd="mul">×</button>
-        <button class="btn btn-action btn-clear" data-action="clear" id="btn-clear">AC</button>
+        <button class="btn btn-op" data-action="insert" data-cmd="mul"><span class="btn-sec-label">nPr</span>×</button>
+        <button class="btn btn-op" data-action="insert" data-cmd="div"><span class="btn-sec-label">nCr</span>÷</button>
 
         <!-- Row 3 -->
-        <button class="btn btn-num" data-action="insert" data-cmd="1">1</button>
-        <button class="btn btn-num" data-action="insert" data-cmd="2">2</button>
-        <button class="btn btn-num" data-action="insert" data-cmd="3">3</button>
-        <button class="btn btn-op" data-action="insert" data-cmd="sub">−</button>
-        <button class="btn btn-equals" data-action="evaluate" id="btn-equals" rowspan="2">=</button>
+        <button class="btn btn-num" data-action="insert" data-cmd="1"><span class="btn-sec-label">STAT</span>1</button>
+        <button class="btn btn-num" data-action="insert" data-cmd="2"><span class="btn-sec-label">CMPLX</span>2</button>
+        <button class="btn btn-num" data-action="insert" data-cmd="3"><span class="btn-sec-label">BASE</span>3</button>
+        <button class="btn btn-op" data-action="insert" data-cmd="add"><span class="btn-sec-label">Pol</span>+</button>
+        <button class="btn btn-op" data-action="insert" data-cmd="sub"><span class="btn-sec-label">Rec</span>−</button>
 
         <!-- Row 4 -->
-        <button class="btn btn-num btn-zero" data-action="insert" data-cmd="0">0</button>
-        <button class="btn btn-num" data-action="insert" data-cmd="dot">.</button>
-        <button class="btn btn-num" data-action="insert" data-cmd="comma">,</button>
-        <button class="btn btn-op" data-action="insert" data-cmd="add">+</button>
+        <button class="btn btn-num" data-action="insert" data-cmd="0"><span class="btn-sec-label">Rnd</span>0</button>
+        <button class="btn btn-num" data-action="insert" data-cmd="dot"><span class="btn-sec-label">Ran# <span class="btn-alpha-label">RanInt</span></span>.</button>
+        <button class="btn btn-num" data-action="insert" data-cmd="sci"><span class="btn-sec-label">π <span class="btn-alpha-label">e</span></span>×10ˣ</button>
+        <button class="btn btn-num" data-action="insert" data-cmd="ans"><span class="btn-sec-label">DRG▶</span>Ans</button>
+        <button class="btn btn-equals" data-action="evaluate" id="btn-equals">=</button>
       </div>
     </div>
 
@@ -117,6 +118,6 @@
     <div class="bottom-strip"></div>
   </div>
 
-  <script type="module" src="app.js"></script>
+  <script type="module" src="app.js?v=4"></script>
 </body>
 </html>

@@ -1,0 +1,15 @@
+<!DOCTYPE html>
+<html>
+<body>
+<script type="module">
+import { ComputeEngine } from 'https://esm.run/@cortex-js/compute-engine';
+const ce = new ComputeEngine();
+const result = [];
+result.push(ce.parse('\\slash').json);
+result.push(ce.parse('/').json);
+result.push(ce.parse('{/}').json);
+result.push(ce.parse('\\mathbin{/}').json);
+document.body.innerHTML = '<pre>' + JSON.stringify(result, null, 2) + '</pre>';
+</script>
+</body>
+</html>
